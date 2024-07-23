@@ -14,7 +14,6 @@ class AuthenticateWithToken
         $bearerToken = $request->bearerToken();
 
         $token = PersonalAccessToken::findToken($bearerToken);
-        // var_dump($token);
         if ($token) {
             $request->setUserResolver(function () use ($token) {
                 return $token->tokenable;

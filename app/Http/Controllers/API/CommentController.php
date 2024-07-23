@@ -33,7 +33,10 @@ class CommentController extends Controller
     public function store(StoreCommentRequest $request)
     {
         try {
-            $comment = $this->commentService->createComment($request->validated());
+            $user = auth()->user();
+            $data = array_merge($request->validated(), ['author_id' => $user->id]);
+
+            $comment = $this->commentService->createComment($data);
             return $this->successResponse(new CommentResource($comment), 'Comment created successfully', 201);
         } catch (\Exception $e) {
             CustomException::handle($e);

@@ -55,7 +55,6 @@ class PostController extends Controller
     {
         try {
             $user = auth()->user();
-            dd($user);
             $data = array_merge($request->validated(), ['author_id' => $user->id]);
             $post = $this->postService->createPost($data);
             return $this->successResponse(new PostResource($post), 'Post created successfully', 201);
@@ -79,7 +78,6 @@ class PostController extends Controller
     {
 
         try {
-            $this->authorize('update', $request);
 
             $post = $this->postService->updatePost($id, $request->validated());
             return $this->successResponse(new PostResource($post), 'Post updated successfully');

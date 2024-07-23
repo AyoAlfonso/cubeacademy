@@ -32,7 +32,6 @@ A laravel RESTful API for a blog post system. I am using token based authenticat
 
     -   POST /api/register
     -   POST /api/login
-    -   GET /api/logout
 
 -   Posts:
 

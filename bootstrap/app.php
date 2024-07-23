@@ -12,16 +12,9 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // $middleware->statefulApi();
-        // $middleware->alias([
-        //     'auth.token' => AuthenticateWithToken::class,
-        // ]);
 
-        //  middleware to only be use on te api routes in group called auth.api
         $middleware->group('api', [
-            // 'auth:sanctum',
-            // 'auth.token',
-            // \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
+            \Laravel\Sanctum\Http\Middleware\EnsureFrontendRequestsAreStateful::class,
             // 'throttle:api',
             // \Illuminate\Routing\Middleware\SubstituteBindings::class,
             AuthenticateWithToken::class,
