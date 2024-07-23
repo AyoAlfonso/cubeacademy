@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
@@ -51,10 +52,11 @@ class AuthController extends Controller
             }
 
             $accessToken = auth()->user()->createToken('authToken')->plainTextToken;
-
+            $user = auth()->user();
             return $this->successResponse([
-                'user' => auth()->user(),
+                'user' => $user,
                 'access_token' => $accessToken,
+                'token_type' => 'Bearer',
             ], 'User logged in successfully');
         } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 401);

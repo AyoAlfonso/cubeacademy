@@ -54,12 +54,9 @@ class PostController extends Controller
     public function store(StorePostRequest $request)
     {
         try {
-            // pick the user id from the token in the header
-            // $userId = Auth::user()->id; // this is the user id
-            // $userId = $request->user();
-            // dd($userId);
-            // dd(usidss);
-            $data = array_merge($request->validated());
+            $user = auth()->user();
+            dd($user);
+            $data = array_merge($request->validated(), ['author_id' => $user->id]);
             $post = $this->postService->createPost($data);
             return $this->successResponse(new PostResource($post), 'Post created successfully', 201);
         } catch (\Exception $e) {
@@ -82,6 +79,8 @@ class PostController extends Controller
     {
 
         try {
+            $this->authorize('update', $request);
+
             $post = $this->postService->updatePost($id, $request->validated());
             return $this->successResponse(new PostResource($post), 'Post updated successfully');
         } catch (\Exception $e) {

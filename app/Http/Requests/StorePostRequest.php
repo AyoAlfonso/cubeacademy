@@ -15,6 +15,11 @@ class StorePostRequest extends FormRequest
      */
     public function authorize()
     {
+        // check if the user has authenticated
+        // if not return false
+        if (!auth()->check()) {
+            return false;
+        }
         return true;
     }
 
@@ -45,6 +50,16 @@ class StorePostRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw CustomException::validationError($validator);
+    }
+
+    /**
+     * Handle a failed authorization attempt.
+     *
+     * @return void
+     */
+    protected function failedAuthorization()
+    {
+        throw CustomException::authorizationError('Unauthorized');
     }
 
 }

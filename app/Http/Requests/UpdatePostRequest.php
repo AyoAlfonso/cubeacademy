@@ -15,6 +15,9 @@ class UpdatePostRequest extends FormRequest
      */
     public function authorize()
     {
+        if (!auth()->check()) {
+            return false;
+        }
         return true;
     }
 
@@ -44,5 +47,15 @@ class UpdatePostRequest extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         throw CustomException::validationError($validator);
+    }
+
+    /**
+     * Handle a failed authorization attempt.
+     *
+     * @return void
+     */
+    protected function failedAuthorization()
+    {
+        throw CustomException::authorizationError('Unauthorized');
     }
 }

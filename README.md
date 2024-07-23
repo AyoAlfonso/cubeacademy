@@ -21,8 +21,8 @@ A laravel RESTful API for a blog post system. I am using token based authenticat
 3. Copy `.env.example` to `.env` and configure your database there is an empty sqlite database in the `database/` folder of the project
 4. Run `php artisan key:generate` and you will get a new key in your `.env` file
 5. Run `php artisan migrate`
-6. Run `php artisan serve` to start the development server
-7. Run `php artisan db:seed` to seed the database with 20 users and their posts and over 300 comments
+6. Run `php artisan db:seed` to seed the database with 20 users and their posts and over 300 comments
+7. Run `php artisan serve` to start the development server at `http://127.0.0.1:8000/api` e.g for all the posts `http://127.0.0.1:8000/api/posts`
 8. To Run `php artisan app:publish-scheduled` to run the scheduled jobs that every minute directly. Check the `app/Console/Commands/PublishScheduledPosts.php` file for how it works
 9. Run `php artisan l5-swagger:generate` to generate the swagger documentation at `public/swagger.json` and 127.0.0.1:8000/api/documentation
 

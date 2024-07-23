@@ -74,6 +74,10 @@ class CustomException extends Exception
         $message = 'The given data was invalid. Errors: ' . implode(' | ', $errors);
         return new self($message, 0, 422);
     }
+    public static function authorizationError($message): self
+    {
+        return new self($message, 0, 403);
+    }
     private static function serverError($message = 'Internal server error'): self
     {
         return new self($message, 0, 500);

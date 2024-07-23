@@ -15,7 +15,11 @@ class StoreCommentRequest extends FormRequest
      */
     public function authorize()
     {
+        if (!auth()->check()) {
+            return false;
+        }
         return true;
+
     }
 
     /**
@@ -45,4 +49,13 @@ class StoreCommentRequest extends FormRequest
         throw CustomException::validationError($validator);
     }
 
+    /**
+     * Handle a failed authorization attempt.
+     *
+     * @return void
+     */
+    protected function failedAuthorization()
+    {
+        throw CustomException::authorizationError('Unauthorized');
+    }
 }
