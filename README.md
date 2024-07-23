@@ -10,22 +10,21 @@ A laravel RESTful API for a blog post system. I am using token based authenticat
 -   A Service layer for business logic (see `Services` folder)
 -   Repository pattern for data access (see `Repositories` folder)
 -   Custom exception handling (see `Exceptions` folder)
--   API response trait for consistent API responses
+-   Used API response trait for consistent API responses see `ApiResponser` trait in `Traits` folder
+-   Validation Custom Error handling with the failedValidation method using `ValidationException` in the `StoreCategoryRequest`, `StoreCommentRequest`, `StorePostRequest`, `StoreUserRequest`
+-   Controller Custom error handling with `CustomException` class
 
 ## Setup
 
 1. Clone the repository
 2. Run `composer install`
-3. Copy `.env.example` to `.env` and configure your database
-4. Run `php artisan key:generate`
+3. Copy `.env.example` to `.env` and configure your database there is an empty sqlite database in the `database/` folder of the project
+4. Run `php artisan key:generate` and you will get a new key in your `.env` file
 5. Run `php artisan migrate`
 6. Run `php artisan serve` to start the development server
-
-Run
-
-php artisan db:seed
-
-To seeed the database with 20 users and their posts and over 300 comments
+7. Run `php artisan db:seed` to seed the database with 20 users and their posts and over 300 comments
+8. To Run `php artisan app:publish-scheduled` to run the scheduled jobs that every minute directly. Check the `app/Console/Commands/PublishScheduledPosts.php` file for how it works
+9. Run `php artisan l5-swagger:generate` to generate the swagger documentation at `public/swagger.json` and 127.0.0.1:8000/api/documentation
 
 ## API Endpoints
 
@@ -98,7 +97,7 @@ Run `php artisan test` to execute the test suite.
 
 This project is open-sourced software licensed under the MIT license.
 
-Example commandline commands I used to create files and in debbuging
+Example CLI commands you might find useful to create files and in debbuging
 
 ```bash
 # General Artisan commands
@@ -118,5 +117,8 @@ php artisan route:clear
 php artisan make:factory PostFactory --model=Post
 php artisan make:factory CategoryFactory --model=Category
 php artisan make:factory CommentFactory --model=Comment
+
+#Swagger documentation generation
+php artisan l5-swagger:generate
 
 ```

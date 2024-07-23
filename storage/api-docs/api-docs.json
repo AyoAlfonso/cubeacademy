@@ -1,0 +1,84 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Cubeacademy API",
+        "version": "1.0.2"
+    },
+    "paths": {
+        "/api/posts": {
+            "get": {
+                "summary": "Get all posts",
+                "operationId": "4186b281454d4cf4c67a3254c731218a",
+                "responses": {
+                    "200": {
+                        "description": "Successful operation",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Post"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Post": {
+                "title": "Post",
+                "description": "Post model",
+                "properties": {
+                    "id": {
+                        "title": "ID",
+                        "description": "ID of the post",
+                        "type": "integer",
+                        "format": "int64",
+                        "example": 1
+                    },
+                    "title": {
+                        "title": "Title",
+                        "description": "Title of the post",
+                        "type": "string",
+                        "example": "A nice post"
+                    },
+                    "content": {
+                        "title": "Content",
+                        "description": "Content of the post",
+                        "type": "string",
+                        "example": "This is the content of the post"
+                    },
+                    "category": {
+                        "title": "Category",
+                        "description": "Category of the post",
+                        "example": "PHP"
+                    },
+                    "author": {
+                        "title": "Author",
+                        "description": "Author of the post",
+                        "example": {
+                            "id": 1,
+                            "name": "John Doe",
+                            "email": "john@example.com"
+                        }
+                    },
+                    "updated_at": {
+                        "title": "Updated At",
+                        "description": "Updated at of the post",
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2023-01-01T00:00:00+00:00"
+                    }
+                },
+                "type": "object",
+                "xml": {
+                    "name": "Post"
+                }
+            }
+        }
+    }
+}

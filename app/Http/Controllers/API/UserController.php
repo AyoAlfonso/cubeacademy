@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\StoreUserRequest; 
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
 use App\Services\UserService;
 use App\Traits\ApiResponser;
@@ -13,7 +13,7 @@ class UserController extends Controller
     use ApiResponser;
 
     protected $userService;
-    public function __construct(UserService $userService)       
+    public function __construct(UserService $userService)
     {
         $this->userService = $userService;
     }
@@ -44,7 +44,7 @@ class UserController extends Controller
 
     public function destroy($id)
     {
-            $this->userService->deleteUser($id);
+        $this->userService->deleteUser($id);
         return $this->successResponse(null, 'User deleted successfully');
     }
 }

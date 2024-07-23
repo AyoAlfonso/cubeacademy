@@ -4,9 +4,9 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Traits\ApiResponser;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use App\Traits\ApiResponser;
 
 class AuthController extends Controller
 {
@@ -18,7 +18,7 @@ class AuthController extends Controller
             $validatedData = $request->validate([
                 'name' => 'required|max:55',
                 'email' => 'email|required|unique:users',
-                'password' => 'required|confirmed'
+                'password' => 'required|confirmed',
             ]);
 
             $validatedData['password'] = Hash::make($request->password);
@@ -29,7 +29,7 @@ class AuthController extends Controller
 
             return $this->successResponse([
                 'user' => $user,
-                'access_token' => $accessToken
+                'access_token' => $accessToken,
             ], 'User registered successfully');
 
         } catch (\Exception $e) {
@@ -43,11 +43,8 @@ class AuthController extends Controller
         try {
             $loginData = $request->validate([
                 'email' => 'email|required',
-                'password' => 'required'
+                'password' => 'required',
             ]);
-
-            // var_dump('Before sleep');
-// return response()->json(['message' => 'Before sleep']);
 
             if (!auth()->attempt($loginData)) {
                 return $this->errorResponse('Invalid Credentials', 401);
@@ -57,9 +54,9 @@ class AuthController extends Controller
 
             return $this->successResponse([
                 'user' => auth()->user(),
-                'access_token' => $accessToken
+                'access_token' => $accessToken,
             ], 'User logged in successfully');
-        }catch (\Exception $e){
+        } catch (\Exception $e) {
             return $this->errorResponse($e->getMessage(), 401);
         }
     }

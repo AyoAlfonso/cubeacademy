@@ -13,9 +13,10 @@ class PostResource extends JsonResource
             'id' => $this->id,
             'title' => $this->title,
             'content' => $this->content,
-            'category' => new CategoryResource($this->whenLoaded('category')),
+            'category' => $this->category->name,
             'comments' => CommentResource::collection($this->whenLoaded('comments')),
-            'author_id' => new UserResource($this->whenLoaded('user')),
+            'author' => new UserResource($this->author),
+            'status' => $this->status,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

@@ -1,20 +1,28 @@
-
 <?php
 
-namespace App\Repositories; 
+namespace App\Repositories;
 
 use App\Models\User;
 
-class UserRepository  
+class UserRepository
 {
     public function create(array $data): User
     {
         return User::create($data);
     }
 
+    public function all()
+    {
+        return User::all();
+    }
+
     public function find(int $id): User
     {
         return User::find($id);
+    }
+    public function findOrFail($id)
+    {
+        return User::findOrFail($id);
     }
 
     public function findByEmail(string $email): User
@@ -29,8 +37,8 @@ class UserRepository
 
     public function update(User $user, array $data): User
     {
-         $user->update($data);
-         return $user;
+        $user->update($data);
+        return $user;
     }
 
     public function delete(User $user): User

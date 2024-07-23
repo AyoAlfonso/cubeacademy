@@ -2,49 +2,77 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCommentRequest;
 use App\Http\Resources\CommentResource;
-use App\Models\Comment;
 use App\Services\CommentService;
 use App\Traits\ApiResponser;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CommentController extends Controller
 {
     use ApiResponser;
 
     protected $commentService;
-    public function __construct(CommentService $commentService)       
+    public function __construct(CommentService $commentService)
     {
         $this->commentService = $commentService;
     }
 
     public function index()
     {
-        $comments = Comment::all();
-        return $this->successResponse(CommentResource::collection($comments), 'Comments retrieved successfully');
+        try {
+            $comments = $this->commentService->getAllComments();
+            return $this->successResponse(CommentResource::collection($comments), 'Comments retrieved successfully');
+        } catch (\Exception $e) {
+            throw CustomException::serverError($e->getMessage());
+        }
     }
 
     public function store(StoreCommentRequest $request)
     {
-        $comment = Comment::create($request->validated());
-        return $this->successResponse(new CommentResource($comment), 'Comment created successfully', 201);
+        try {
+            $comment = $this->commentService->createComment($request->validated());
+            return $this->successResponse(new CommentResource($comment), 'Comment created successfully', 201);
+        } catch (\Exception $e) {
+            throw CustomException::serverError($e->getMessage());
+        }
     }
 
-    public function show(Comment $comment)
+    public function show($id)
     {
-        return $this->successResponse(new CommentResource($comment), 'Comment retrieved successfully');
+        try {
+            $comment = $this->commentService->getCommentById($id);
+            return $this->successResponse(new CommentResource($comment), 'Comment retrieved successfully');
+        } catch (ModelNotFoundException $e) {
+            throw CustomException::notFound('Category not found');
+        } catch (\Exception $e) {
+            throw CustomException::serverError($e->getMessage());
+        }
     }
 
-    public function update(StoreCommentRequest $request, Comment $comment)
+    public function update(StoreCommentRequest $request, $id)
     {
-        $comment->update($request->validated());
-        return $this->successResponse(new CommentResource($comment), 'Comment updated successfully');
+        try {
+            $category = $this->commentService->updateComment($id, $request->validated());
+            return $this->successResponse(new CommentService($category), 'Comment updated successfully');
+        } catch (ModelNotFoundException $e) {
+            throw CustomException::notFound('Comment not found');
+        } catch (\Exception $e) {
+            throw CustomException::serverError($e->getMessage());
+        }
     }
 
-    public function destroy(Comment $comment)
+    public function destroy($id)
     {
-        $comment->delete();
-        return $this->successResponse(null, 'Comment deleted successfully');
+        try {
+            $this->commentService->deleteComment($id);
+            return $this->successResponse(null, 'Comment deleted successfully');
+        } catch (ModelNotFoundException $e) {
+            throw CustomException::notFound('Comment not found');
+        } catch (\Exception $e) {
+            throw CustomException::serverError($e->getMessage());
+        }
     }
 }
