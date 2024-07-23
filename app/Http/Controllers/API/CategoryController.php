@@ -9,7 +9,6 @@ use App\Http\Requests\UpdateCategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Services\CategoryService;
 use App\Traits\ApiResponser;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CategoryController extends Controller
 {
@@ -27,7 +26,8 @@ class CategoryController extends Controller
             $categories = $this->categoryService->getAllCategories();
             return $this->successResponse(CategoryResource::collection($categories), 'Categories retrieved successfully');
         } catch (\Exception $e) {
-            throw CustomException::serverError($e->getMessage());
+            CustomException::handle($e);
+
         }
     }
 
@@ -37,7 +37,8 @@ class CategoryController extends Controller
             $category = $this->categoryService->createCategory($request->validated());
             return $this->successResponse(new CategoryResource($category), 'Category created successfully', 201);
         } catch (\Exception $e) {
-            throw CustomException::serverError($e->getMessage());
+            CustomException::handle($e);
+
         }
     }
 
@@ -46,10 +47,8 @@ class CategoryController extends Controller
         try {
             $category = $this->categoryService->getCategoryById($id);
             return $this->successResponse(new CategoryResource($category), 'Category retrieved successfully');
-        } catch (ModelNotFoundException $e) {
-            throw CustomException::notFound('Category not found');
         } catch (\Exception $e) {
-            throw CustomException::serverError($e->getMessage());
+            CustomException::handle($e);
         }
     }
 
@@ -58,10 +57,9 @@ class CategoryController extends Controller
         try {
             $category = $this->categoryService->updateCategory($id, $request->validated());
             return $this->successResponse(new CategoryResource($category), 'Category updated successfully');
-        } catch (ModelNotFoundException $e) {
-            throw CustomException::notFound('Category not found');
         } catch (\Exception $e) {
-            throw CustomException::serverError($e->getMessage());
+            CustomException::handle($e);
+
         }
     }
 
@@ -70,10 +68,8 @@ class CategoryController extends Controller
         try {
             $this->categoryService->deleteCategory($id);
             return $this->successResponse(null, 'Category deleted successfully');
-        } catch (ModelNotFoundException $e) {
-            throw CustomException::notFound('Category not found');
         } catch (\Exception $e) {
-            throw CustomException::serverError($e->getMessage());
+            CustomException::handle($e);
         }
     }
 }

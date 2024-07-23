@@ -7,6 +7,7 @@ use Exception;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class CustomException extends Exception
@@ -21,6 +22,8 @@ class CustomException extends Exception
             throw CustomException::notAuthorized('You are not authorized to update this resource', 403);
         } elseif ($e instanceof ModelNotFoundException) {
             throw CustomException::notFound('Resource not found');
+        } elseif ($e instanceof ValidationException) {
+            throw CustomException::validationError($e->validator);
         } else {
             throw CustomException::serverError($e->getMessage());
         }
@@ -65,9 +68,15 @@ class CustomException extends Exception
     {
         return new self($message, 0, 400);
     }
-
+    public static function validationError($validator): self
+    {
+        $errors = $validator->errors()->all();
+        $message = 'The given data was invalid. Errors: ' . implode(' | ', $errors);
+        return new self($message, 0, 422);
+    }
     private static function serverError($message = 'Internal server error'): self
     {
         return new self($message, 0, 500);
     }
+
 }

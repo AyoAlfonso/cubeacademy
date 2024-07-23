@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Exceptions\CustomException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUserRequest;
 use App\Http\Resources\UserResource;
@@ -20,31 +21,51 @@ class UserController extends Controller
 
     public function index()
     {
-        $users = $this->userService->getAllUsers();
-        return $this->successResponse(UserResource::collection($users), 'Users retrieved successfully');
+        try {
+            $users = $this->userService->getAllUsers();
+            return $this->successResponse(UserResource::collection($users), 'Users retrieved successfully');
+        } catch (\Exception $e) {
+            CustomException::handle($e);
+        }
     }
 
     public function store(StoreUserRequest $request)
     {
-        $user = $this->userService->createUser($request->validated());
-        return $this->successResponse(new UserResource($user), 'User created successfully', 201);
+        try {
+            $user = $this->userService->createUser($request->validated());
+            return $this->successResponse(new UserResource($user), 'User created successfully', 201);
+        } catch (\Exception $e) {
+            CustomException::handle($e);
+        }
     }
 
     public function show($id)
     {
-        $user = $this->userService->getUserById($id);
-        return $this->successResponse(new UserResource($user), 'User retrieved successfully');
+        try {
+            $user = $this->userService->getUserById($id);
+            return $this->successResponse(new UserResource($user), 'User retrieved successfully');
+        } catch (\Exception $e) {
+            CustomException::handle($e);
+        }
     }
 
     public function update(StoreUserRequest $request, $id)
     {
-        $user = $this->userService->updateUser($id, $request->validated());
-        return $this->successResponse(new UserResource($user), 'User updated successfully');
+        try {
+            $user = $this->userService->updateUser($id, $request->validated());
+            return $this->successResponse(new UserResource($user), 'User updated successfully');
+        } catch (\Exception $e) {
+            CustomException::handle($e);
+        }
     }
 
     public function destroy($id)
     {
-        $this->userService->deleteUser($id);
-        return $this->successResponse(null, 'User deleted successfully');
+        try {
+            $this->userService->deleteUser($id);
+            return $this->successResponse(null, 'User deleted successfully');
+        } catch (\Exception $e) {
+            CustomException::handle($e);
+        }
     }
 }

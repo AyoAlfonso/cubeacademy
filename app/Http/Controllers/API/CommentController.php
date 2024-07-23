@@ -8,7 +8,6 @@ use App\Http\Requests\StoreCommentRequest;
 use App\Http\Resources\CommentResource;
 use App\Services\CommentService;
 use App\Traits\ApiResponser;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class CommentController extends Controller
 {
@@ -26,7 +25,8 @@ class CommentController extends Controller
             $comments = $this->commentService->getAllComments();
             return $this->successResponse(CommentResource::collection($comments), 'Comments retrieved successfully');
         } catch (\Exception $e) {
-            throw CustomException::serverError($e->getMessage());
+            CustomException::handle($e);
+
         }
     }
 
@@ -36,7 +36,8 @@ class CommentController extends Controller
             $comment = $this->commentService->createComment($request->validated());
             return $this->successResponse(new CommentResource($comment), 'Comment created successfully', 201);
         } catch (\Exception $e) {
-            throw CustomException::serverError($e->getMessage());
+            CustomException::handle($e);
+
         }
     }
 
@@ -45,10 +46,8 @@ class CommentController extends Controller
         try {
             $comment = $this->commentService->getCommentById($id);
             return $this->successResponse(new CommentResource($comment), 'Comment retrieved successfully');
-        } catch (ModelNotFoundException $e) {
-            throw CustomException::notFound('Category not found');
         } catch (\Exception $e) {
-            throw CustomException::serverError($e->getMessage());
+            CustomException::handle($e);
         }
     }
 
@@ -57,10 +56,9 @@ class CommentController extends Controller
         try {
             $category = $this->commentService->updateComment($id, $request->validated());
             return $this->successResponse(new CommentService($category), 'Comment updated successfully');
-        } catch (ModelNotFoundException $e) {
-            throw CustomException::notFound('Comment not found');
         } catch (\Exception $e) {
-            throw CustomException::serverError($e->getMessage());
+            CustomException::handle($e);
+
         }
     }
 
@@ -69,10 +67,8 @@ class CommentController extends Controller
         try {
             $this->commentService->deleteComment($id);
             return $this->successResponse(null, 'Comment deleted successfully');
-        } catch (ModelNotFoundException $e) {
-            throw CustomException::notFound('Comment not found');
         } catch (\Exception $e) {
-            throw CustomException::serverError($e->getMessage());
+            CustomException::handle($e);
         }
     }
 }
