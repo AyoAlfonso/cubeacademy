@@ -4,8 +4,8 @@ A laravel RESTful API for a blog post system. I am using token based authenticat
 
 ## Features and Technical Decisions
 
--   CRUD operations for blog posts, users categories, and comments. With Factory generation for seeding the database
--   API resources for consistent response formatting. Using apiResource in the routes to keep API cleaner and more organized
+-   `C|R|U|D` operations for blog posts, users blog categories, and blog comments. With Factory fake data generation for seeding the database
+-   Using `Route::apiResource()` in the routes to keep API cleaner and more organized
 -   Used Form requests for input validation
 -   A Service layer for business logic (see `Services` folder)
 -   Repository pattern for data access (see `Repositories` folder)
