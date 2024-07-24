@@ -70,14 +70,16 @@ Run the command using `php artisan schedule:work` to put on the job in the backg
 ⇂ '/usr/local/Cellar/php/8.3.9/bin/php' 'artisan' app:publish-scheduled-posts > '/dev/null' 2>&1
 ```
 
-For the real thing you need to set up a cron job on you machine.
+For the above to work, you need to set up the cron job on your machine
 
 Go to your terminal, cd into your project and run:
 crontab -e
 
 After that press i in your keyboard in order to insert data, then paste the command below:
 
--   -   -   -   -   cd /path/to/your/laravel/cubacademy-api && php artisan schedule:run 1>> /dev/null 2>&1
+```bash
+* * * * * php /path/to/your/laravel-project/artisan schedule:run 1>> /dev/null 2>&1
+```
 
 After that press the ESC button and write :wq (if you want to save the changes)
 NB: To get full path of your project, you can run the 'pwd' command.
