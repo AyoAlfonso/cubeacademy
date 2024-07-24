@@ -34,8 +34,8 @@ class StorePostRequest extends FormRequest
             'title' => 'required',
             'content' => 'required',
             'status' => 'sometimes|required|in:archived,published',
-            'category_id' => 'required',
-            'author_id' => 'required',
+            'category_id' => 'required|exists:categories,id',
+            // 'author_id' => 'required',
         ];
     }
 

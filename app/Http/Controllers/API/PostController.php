@@ -78,7 +78,6 @@ class PostController extends Controller
     {
 
         try {
-
             $post = $this->postService->updatePost($id, $request->validated());
             return $this->successResponse(new PostResource($post), 'Post updated successfully');
         } catch (\Exception $e) {
