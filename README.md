@@ -16,7 +16,6 @@ A laravel RESTful API for a blog post system. I am using token based authenticat
 
 ## Setup
 
-
 Watch this [video]() video to get started or follow the steps below
 
 1. Clone the repository
@@ -26,7 +25,7 @@ Watch this [video]() video to get started or follow the steps below
 5. Run `php artisan migrate`
 6. Run `php artisan db:seed` to seed the database with 20 users and their posts and over 300 comments
 7. Run `php artisan serve` to start the development server at `http://127.0.0.1:8000/api` e.g for all the posts `http://127.0.0.1:8000/api/posts`
-8. To Run `php artisan app:publish-scheduled` to run the scheduled jobs that every minute directly. Check the `app/Console/Commands/PublishScheduledPosts.php` file for how it works
+8. To Run `php artisan schedule:work` to run the scheduled jobs that every minute directly. Check the `app/Console/Commands/PublishScheduledPosts.php` file for how it works
 9. Run `php artisan l5-swagger:generate` to generate the swagger documentation at `public/swagger.json` and 127.0.0.1:8000/api/documentation
 
 ## Architecture
@@ -55,32 +54,35 @@ This architecture promotes separation of concerns and makes the code more mainta
 
 ## Testing
 
-Run `php artisan test` to execute the unit and feature tests.
+Run `php artisan test tests` to execute the unit and feature tests.
 
+Scheduler is implemented here `app/Console/Commands/PublishScheduledPosts.php`
+Create a couple blogposts with the `scheduled_at` into the future maybe 2 mins into the future in this format `Y-m-d H:i:s` e.g `2024-07-24 16:22:00`
+
+Run the command using `php artisan app:publish-scheduled-posts` to run the job directly.
+
+Laravel will mimic a scheduler.
+
+Run the command using `php artisan schedule:work` to put on the job in the background. In a minute you should see something like this:
 
 ```bash
-Scheduler is implemented here `app/Console/Commands/PublishScheduledPosts.php`
-Create a couple blogposts with the `scheduled_at` into the future maybe 2 mins into the future.
-
-Run the command using `php artisan app:publish-scheduled-posts` to run the job directly. 
-
-To start the Scheduler
-
-You can use  `php artisan schedule:work` and laravel will mimic a scheduler
+[  2024-07-24 16:22:00 Running ['artisan' app:publish-scheduled-posts]  232.14ms DONE
+⇂ '/usr/local/Cellar/php/8.3.9/bin/php' 'artisan' app:publish-scheduled-posts > '/dev/null' 2>&1
+```
 
 For the real thing you need to set up a cron job on you machine.
 
 Go to your terminal, cd into your project and run:
 crontab -e
 
-after that press i in your keyboard in order to insert data, then paste the command below:
+After that press i in your keyboard in order to insert data, then paste the command below:
 
-* * * * * php /path-to-project schedule:run 1>> /dev/null 2>&1
-after that press the ESC button and write :wq (if you want to save the changes)
+-   -   -   -   -   cd /path/to/your/laravel/cubacademy-api && php artisan schedule:run 1>> /dev/null 2>&1
+
+After that press the ESC button and write :wq (if you want to save the changes)
 NB: To get full path of your project, you can run the 'pwd' command.
-```
 
-
+If you are on a macbook you can use env EDITOR=nano crontab -e to open the crontab in nano
 
 Example CLI commands you might find useful to create files and in debbuging
 
@@ -98,6 +100,10 @@ php artisan make:controller API/AuthController
 php artisan route:list
 php artisan route:clear
 
+# Scheduler jobs
+env EDITOR=nano crontab -e # to open crontab in nano
+php artisan schedule:list
+
 # Factory generation
 php artisan make:factory PostFactory --model=Post
 php artisan make:factory CategoryFactory --model=Category
@@ -105,7 +111,6 @@ php artisan make:factory CommentFactory --model=Comment
 
 #Swagger documentation generation
 php artisan l5-swagger:generate
-
 ```
 
 ## API Endpoints
