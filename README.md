@@ -16,7 +16,6 @@ A laravel RESTful API for a blog post system. I am using token based authenticat
 
 ## Setup
 
-Watch this [video]() video to get started or follow the steps below
 
 1. Clone the repository
 2. Run `composer install`
