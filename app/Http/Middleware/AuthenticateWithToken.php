@@ -12,15 +12,20 @@ class AuthenticateWithToken
     public function handle(Request $request, Closure $next)
     {
         $bearerToken = $request->bearerToken();
+        try {
+            if ($bearerToken) {
+                $token = PersonalAccessToken::findToken($bearerToken);
+                if ($token) {
+                    $request->setUserResolver(function () use ($token) {
+                        return $token->tokenable;
+                    });
+                    Auth::setUser($token->tokenable);
+                }
 
-        $token = PersonalAccessToken::findToken($bearerToken);
-        if ($token) {
-            $request->setUserResolver(function () use ($token) {
-                return $token->tokenable;
-            });
-            Auth::setUser($token->tokenable);
+            }
+            return $next($request);
+        } catch (\Throwable $th) {
+            throw $th;
         }
-
-        return $next($request);
     }
 }
