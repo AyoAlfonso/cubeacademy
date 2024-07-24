@@ -54,14 +54,12 @@ This architecture promotes separation of concerns and makes the code more mainta
 
 Run `php artisan test` to execute the unit and feature tests.
 
-## License
-
-This project is open-sourced software licensed under the MIT license.
 
 ```bash
 Scheduler is implemented here `app/Console/Commands/PublishScheduledPosts.php`
+Create a couple blogposts with the `scheduled_at` into the future maybe 2 mins into the future.
 
-You can run the command using `php artisan app:publish-scheduled-posts` to run the job that directly. 
+Run the command using `php artisan app:publish-scheduled-posts` to run the job directly. 
 
 To start the Scheduler
 
