@@ -18,7 +18,7 @@ A laravel RESTful API for a blog post system. I am using token based authenticat
 
 1. Clone the repository
 2. Run `composer install`
-3. Rename `.env.example` to `.env` and cd into the `database` folder and run `touch database/database.sqlite` to create an empty sqlite database
+3. Rename `.env.example` to `.env` and cd into the `database` folder and run `touch database.sqlite` to create an empty sqlite database
 4. Run `php artisan key:generate` and you will get a new key in your `.env` file
 5. Run `php artisan migrate`
 6. Run `php artisan db:seed` to seed the database with 20 users and their posts and over 300 comments
