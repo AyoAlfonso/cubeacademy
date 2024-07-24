@@ -52,7 +52,7 @@ This architecture promotes separation of concerns and makes the code more mainta
 
 ## Testing
 
-Run `php artisan test` to execute the test suite.
+Run `php artisan test` to execute the unit and feature tests.
 
 ## License
 
@@ -78,6 +78,8 @@ after that press i in your keyboard in order to insert data, then paste the comm
 after that press the ESC button and write :wq (if you want to save the changes)
 NB: To get full path of your project, you can run the 'pwd' command.
 ```
+
+
 
 Example CLI commands you might find useful to create files and in debbuging
 
