@@ -16,6 +16,7 @@ class PostResource extends JsonResource
             'category' => $this->category->name,
             'comments' => CommentResource::collection($this->whenLoaded('comments')),
             'author' => new UserResource($this->author),
+            'scheduled_at' => $this->scheduled_at,
             'status' => $this->status ?? 'draft',
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,

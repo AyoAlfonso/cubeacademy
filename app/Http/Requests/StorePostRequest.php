@@ -34,6 +34,7 @@ class StorePostRequest extends FormRequest
             'title' => 'required',
             'content' => 'required',
             'status' => 'sometimes|required|in:archived,published',
+            'scheduled_at' => 'sometimes|required|date_format:Y-m-d H:i:s',
             'category_id' => 'required|exists:categories,id',
             // 'author_id' => 'required',
         ];
